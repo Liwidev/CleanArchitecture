@@ -1,8 +1,9 @@
 import * as logger from "firebase-functions/logger";
 import { Response, Request } from "express";
 import { GetAllUsersUseCase, IGetAllUsersDTO, IGetAllUsersResult } from "../application/GetAllUsersUSeCase";
+
 /**
- * Controller in charge of handle User Creation
+ * Controller in charge of handle Gell All Users
  */
 export class GetAllUserController {
   /**
@@ -10,10 +11,9 @@ export class GetAllUserController {
    */
   public constructor(private readonly _useCase: GetAllUsersUseCase) { }
 
-  // return type `void` means the function has no `return` statement
   /**
-   * @param {Request} request Whom to create
-   * @param {Response} response Whom to create
+   * @param {Request} request Request payload
+   * @param {Response} response Callback function that will handle response 
    * @return {IGetAllUsersResult} Conditional if user was created successfully
    */
   public async handler(request: Request, response: Response): Promise<void> {

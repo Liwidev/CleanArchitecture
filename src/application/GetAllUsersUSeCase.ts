@@ -21,7 +21,7 @@ export class GetAllUsersUseCase implements IUseCase<any, any> {
   /**
    * Execute the Use Case
    * @param {User} input User Object
-   * @return {Promise<ICreateUserResult>} The sum of the two numbers.
+   * @return {Promise<ICreateUserResult>} List with all users found && Timestamp of execution
    */
   public async execute(input: IGetAllUsersDTO): Promise<IGetAllUsersResult> {
     const result = await this._UserRepository.getAll();

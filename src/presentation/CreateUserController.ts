@@ -1,6 +1,7 @@
 import * as logger from "firebase-functions/logger";
 import { Response, Request } from "express";
 import { CreateUserUseCase, ICreateUserDTO, ICreateUserResult } from "../application/CreateUserUseCase";
+
 /**
  * Controller in charge of handle User Creation
  */
@@ -10,11 +11,10 @@ export class CreateUserController {
    */
   public constructor(private readonly _useCase: CreateUserUseCase) { }
 
-  // return type `void` means the function has no `return` statement
   /**
-   * @param {Request} request Whom to create
-   * @param {Response} response Whom to create
-   * @return {Response} Conditional if user was created successfully
+   * @param {Request} request Request with paylod of user to create
+   * @param {Response} response Function that will handle response
+   * @return {ICreateUserResult} Result Payload
    */
   public async handler(request: Request, response: Response): Promise<void> {
     // TODO: The validation needs to be done HERE

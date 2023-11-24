@@ -28,7 +28,7 @@ export class CreateUserUseCase implements IUseCase<ICreateUserDTO, ICreateUserRe
   /**
    * Execute the Use Case
    * @param {User} input User Object
-   * @return {Promise<ICreateUserResult>} The sum of the two numbers.
+   * @return {Promise<ICreateUserResult>} The User object created
    */
   public async execute(input: ICreateUserDTO): Promise<ICreateUserResult> {
     const result = await this._UserRepository.save(input);
