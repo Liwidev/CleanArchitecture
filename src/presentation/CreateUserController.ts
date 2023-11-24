@@ -13,7 +13,7 @@ export class CreateUserController {
 
   /**
    * @param {Request} request Request with paylod of user to create
-   * @param {Response} response Function that will handle response
+   * @param {Response} response Callback function that will handle response
    * @return {ICreateUserResult} Result Payload
    */
   public async handler(request: Request, response: Response): Promise<void> {
