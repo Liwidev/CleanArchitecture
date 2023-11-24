@@ -1,6 +1,6 @@
 import { IUserRepository } from "../domain/IUserRepository";
 import { User } from "../domain/User";
-import { IUseCase } from "../shared/UseCase";
+import { IUseCase } from "../shared/IUseCase";
 
 
 export type ICreateUserDTO = {

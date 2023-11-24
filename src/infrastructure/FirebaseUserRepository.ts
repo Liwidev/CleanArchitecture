@@ -31,7 +31,7 @@ export class FirebaseUserRepository implements IUserRepository {
     const querySnapshot = await this._db.collection("entries").get();
     // TODO: Fix this method, currently is returning an array of null
     querySnapshot.forEach(doc => {
-      const check : User = doc.data().Name;
+      const check: User = doc.data() as User;
       myArray.push(check);
     });
 

@@ -14,7 +14,7 @@ export class GetAllUserController {
   /**
    * @param {Request} request Whom to create
    * @param {Response} response Whom to create
-   * @return {Response} Conditional if user was created successfully
+   * @return {IGetAllUsersResult} Conditional if user was created successfully
    */
   public async handler(request: Request, response: Response): Promise<void> {
     // TODO: The validation needs to be done HERE

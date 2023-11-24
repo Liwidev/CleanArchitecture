@@ -5,6 +5,7 @@
 // -> There is a single Controller per CF
 
 import * as admin from "firebase-admin";
+import { onRequest } from "firebase-functions/v2/https";
 import { CreateUserController } from "./CreateUserController";
 // import { InMemoryUserRepository } from "../infrastructure/InMemoryUserRepository";
 import { CreateUserUseCase } from "../application/CreateUserUseCase";
@@ -16,7 +17,7 @@ import { GetAllUserController } from "./GetAllUserController";
 
 initializeApp();
 
-export const CreateUserhandler = (request: Request, response: Response) => {
+export const CreateUser = onRequest((request: Request, response: Response) => {
   const db = admin.firestore();
 
   // InMemory Implementation
@@ -30,9 +31,9 @@ export const CreateUserhandler = (request: Request, response: Response) => {
   const controller = new CreateUserController(usecase);
 
   controller.handler(request, response);
-};
+});
 
-export const GetAllUserhandler = (request: Request, response: Response) => {
+export const GetAllUser = onRequest((request: Request, response: Response) => {
   const db = admin.firestore();
 
   // InMemory Implementation
@@ -44,6 +45,9 @@ export const GetAllUserhandler = (request: Request, response: Response) => {
 
   const usecase = new GetAllUsersUseCase(FirebaseRepo);
   const controller = new GetAllUserController(usecase);
-  
+
   controller.handler(request, response);
-};
+});
+
+
+
