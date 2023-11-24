@@ -1,29 +1,28 @@
-import { IUserRepository } from "../domain/IUserRepository";
-import { User } from "../domain/User";
+import "reflect-metadata";
+import { injectable, inject } from "inversify";
+import { TYPES } from "../../types";
+import { IUserRepository } from "../shared/IUserRepository";
 import { IUseCase } from "../shared/IUseCase";
+import { ICreateUserDTO, ICreateUserResult } from "./interfaces/ICreateUser";
 
 
-export type ICreateUserDTO = {
-  name: string;
-  age: number;
-  address: string;
-  dateOfBirth: Date;
-  email: string;
-}
-
-export type ICreateUserResult = {
-  data: User;
-  timestamp: Date;
-}
 
 /**
  * Create User Use case Implementation
  */
+@injectable()
 export class CreateUserUseCase implements IUseCase<ICreateUserDTO, ICreateUserResult> {
+
+  private _UserRepository: IUserRepository;
+
   /**
-   * @param {IUserRepository} _UserRepository Repository used to create User
+   * @param {IUserRepository} userRepository Repository used to create User
    */
-  public constructor(private readonly _UserRepository: IUserRepository) { }
+  public constructor(
+    @inject(TYPES.repositories.firebase) userRepository: IUserRepository
+  ) {
+    this._UserRepository = userRepository;
+  }
 
   /**
    * Execute the Use Case

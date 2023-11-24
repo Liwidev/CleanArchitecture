@@ -1,9 +1,12 @@
-import { IUserRepository } from "../domain/IUserRepository";
+import "reflect-metadata";
+import { injectable } from "inversify";
+import { IUserRepository } from "../shared/IUserRepository";
 import { User } from "../domain/User";
 
 /**
  * InMemory implementation
  */
+@injectable()
 export class InMemoryUserRepository implements IUserRepository {
   private readonly _users: User[] = [];
 

@@ -1,15 +1,27 @@
+import "reflect-metadata";
+import { inject } from "inversify";
 import * as logger from "firebase-functions/logger";
 import { Response, Request } from "express";
-import { CreateUserUseCase, ICreateUserDTO, ICreateUserResult } from "../application/CreateUserUseCase";
+import { IUseCase } from "../shared/IUseCase";
+import { TYPES } from "../../types";
+import { IController } from "../shared/IController";
+import { ICreateUserDTO, ICreateUserResult } from "../application/interfaces";
 
 /**
  * Controller in charge of handle User Creation
  */
-export class CreateUserController {
+export class CreateUserController implements IController{
+
+  private _useCase: IUseCase<ICreateUserDTO, ICreateUserResult>;
+
   /**
    * @param {CreateUserUseCase} _useCase Use Case mapped to this controller
    */
-  public constructor(private readonly _useCase: CreateUserUseCase) { }
+  public constructor(
+    @inject(TYPES.useCases.creatUser) useCase: IUseCase<ICreateUserDTO, ICreateUserResult>
+  ) {
+    this._useCase = useCase;
+  }
 
   /**
    * @param {Request} request Request with paylod of user to create

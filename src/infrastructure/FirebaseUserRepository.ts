@@ -1,15 +1,19 @@
-import { IUserRepository } from "../domain/IUserRepository";
+import "reflect-metadata";
+import { injectable } from "inversify";
+import { IUserRepository } from "../shared/IUserRepository";
 import { User } from "../domain/User";
-import { Firestore } from "firebase-admin/firestore";
-
+import { firestore } from "firebase-admin";
 /**
  * Class implementation of the IUserRepository interface
  */
+@injectable()
 export class FirebaseUserRepository implements IUserRepository {
-  /**
-   * @param {Firestore} _db Database used for queries
-   */
-  public constructor(private readonly _db: Firestore) { }
+
+  private _db: firestore.Firestore;
+
+  public constructor() {
+    this._db = firestore();
+  }
 
   /**
    * @param {string} user Whom to create
@@ -29,7 +33,7 @@ export class FirebaseUserRepository implements IUserRepository {
   async getAll(): Promise<User[]> {
     const myArray: User[] = [];
     const querySnapshot = await this._db.collection("entries").get();
-    // TODO: Fix this method, currently is returning an array of null
+    // TODO: Validate if implementation of types to validate response format
     querySnapshot.forEach(doc => {
       const check: User = doc.data() as User;
       myArray.push(check);

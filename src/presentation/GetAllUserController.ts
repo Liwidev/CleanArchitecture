@@ -1,15 +1,27 @@
+import "reflect-metadata";
+import { inject } from "inversify";
 import * as logger from "firebase-functions/logger";
 import { Response, Request } from "express";
-import { GetAllUsersUseCase, IGetAllUsersDTO, IGetAllUsersResult } from "../application/GetAllUsersUSeCase";
+import { IUseCase } from "../shared/IUseCase";
+import { TYPES } from "../../types";
+import { IController } from "../shared/IController";
+import { IGetAllUsersDTO, IGetAllUsersResult } from "../application/interfaces";
 
 /**
  * Controller in charge of handle Gell All Users
  */
-export class GetAllUserController {
+export class GetAllUserController implements IController {
+
+  private _useCase: IUseCase<IGetAllUsersDTO, IGetAllUsersResult>;
+
   /**
    * @param {GetAllUsersUseCase} mapped to this controller
    */
-  public constructor(private readonly _useCase: GetAllUsersUseCase) { }
+  public constructor(
+    @inject(TYPES.useCases.getAllUsers) useCase: IUseCase<IGetAllUsersDTO, IGetAllUsersResult>
+  ) {
+    this._useCase = useCase;
+  }
 
   /**
    * @param {Request} request Request payload

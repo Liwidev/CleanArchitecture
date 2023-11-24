@@ -1,13 +1,6 @@
-import { IUserRepository } from "../domain/IUserRepository";
-import { User } from "../domain/User";
+import { IUserRepository } from "../shared/IUserRepository";
 import { IUseCase } from "../shared/IUseCase";
-
-export type IGetAllUsersDTO = {} | undefined;
-export type IGetAllUsersResult = {
-  users: User[];
-  timestamp: Date,
-}
-
+import { IGetAllUsersDTO, IGetAllUsersResult } from "./interfaces/IGetAllUsers";
 
 /**
  * Get all Users Use case Implementation
