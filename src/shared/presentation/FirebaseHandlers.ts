@@ -6,20 +6,16 @@
 
 // Firebase Libraries
 import { onRequest } from "firebase-functions/v2/https";
-import { initializeApp } from "firebase-admin/app";
 import { Response, Request } from "express";
 // Inversify configuration files
-import { mainContainer } from "../../../inversify.config";
-import { TYPES } from "../../../types";
+import { mainContainer } from "../../config/ioc/inversify.config";
+import { TYPES } from "../../config/ioc/types";
 // Controllers Interface
 import { IController } from "../domain/interface/IController";
 
-// This is needed to initialize Firebase
-initializeApp();
-
 // The following example shows the manual dependency injection without using any libraries
 export const CreateUser = onRequest((request: Request, response: Response) =>
-  mainContainer.get<IController>(TYPES.useCases.creatUser).handler(request, response))
+  mainContainer.get<IController>(TYPES.controller.creatUser).handler(request, response))
 
 export const GetAllUser = onRequest((request: Request, response: Response) =>
-  mainContainer.get<IController>(TYPES.useCases.getAllUsers).handler(request, response))
+  mainContainer.get<IController>(TYPES.controller.getAllUsers).handler(request, response))

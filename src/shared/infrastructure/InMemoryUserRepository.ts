@@ -14,18 +14,17 @@ export class InMemoryUserRepository implements IUserRepository {
    * @param {string} user Whom to create
    * @return {Promise<boolean>} Conditional if user was created successfully
    */
-  public save(user: User): Promise<boolean> {
+  public async save(user: User): Promise<boolean> {
     this._users.push(user);
 
-    return Promise.resolve(true);
+    return true;
   }
 
   /** 
    * Method implementation to capture all users
    * @return {Promise<User[]>} List of Users
    */
-  getAll(): Promise<User[]> {
-    // TODO: Implement get all users
-    throw new Error("Method not implemented.");
+  public async getAll(): Promise<User[]> {
+    return this._users;
   }
 }

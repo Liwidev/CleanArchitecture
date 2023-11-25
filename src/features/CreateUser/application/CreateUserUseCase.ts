@@ -1,11 +1,9 @@
 import "reflect-metadata";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../../../types";
+import { TYPES } from "../../../config/ioc/types";
 import { IUserRepository } from "../../../shared/domain/interface/IUserRepository";
 import { IUseCase } from "../../../shared/domain/interface/IUseCase";
 import { ICreateUserDTO, ICreateUserResult } from "../domain/ICreateUser";
-
-
 
 /**
  * Create User Use case Implementation
@@ -19,7 +17,7 @@ export class CreateUserUseCase implements IUseCase<ICreateUserDTO, ICreateUserRe
    * @param {IUserRepository} userRepository Repository used to create User
    */
   public constructor(
-    @inject(TYPES.repositories.firebase) userRepository: IUserRepository
+    @inject(TYPES.repository) userRepository: IUserRepository
   ) {
     this._UserRepository = userRepository;
   }
@@ -27,7 +25,7 @@ export class CreateUserUseCase implements IUseCase<ICreateUserDTO, ICreateUserRe
   /**
    * Execute the Use Case
    * @param {User} input User Object
-   * @return {Promise<ICreateUserResult>} The User object created
+   * @return {Promise<ICreateUserResult>} The User object created & Timestamp of execution
    */
   public async execute(input: ICreateUserDTO): Promise<ICreateUserResult> {
     const result = await this._UserRepository.save(input);

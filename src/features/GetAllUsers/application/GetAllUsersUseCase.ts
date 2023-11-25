@@ -1,3 +1,6 @@
+import "reflect-metadata";
+import { injectable, inject } from "inversify";
+import { TYPES } from "../../../config/ioc/types";
 import { IUserRepository } from "../../../shared/domain/interface/IUserRepository";
 import { IUseCase } from "../../../shared/domain/interface/IUseCase";
 import { IGetAllUsersDTO, IGetAllUsersResult } from "../domain/IGetAllUsers";
@@ -5,11 +8,19 @@ import { IGetAllUsersDTO, IGetAllUsersResult } from "../domain/IGetAllUsers";
 /**
  * Get all Users Use case Implementation
  */
-export class GetAllUsersUseCase implements IUseCase<any, any> {
+@injectable()
+export class GetAllUsersUseCase implements IUseCase<IGetAllUsersDTO, IGetAllUsersResult> {
+
+  private _UserRepository: IUserRepository;
+
   /**
    * @param {IUserRepository} _UserRepository Repository used to get all Users
    */
-  public constructor(private readonly _UserRepository: IUserRepository) { }
+  public constructor(
+    @inject(TYPES.repository) userRepository: IUserRepository
+  ) {
+    this._UserRepository = userRepository;
+  }
 
   /**
    * Execute the Use Case

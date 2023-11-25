@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { inject } from "inversify";
+import { injectable, inject } from "inversify";
 import * as logger from "firebase-functions/logger";
 import { Response, Request } from "express";
 import { IUseCase } from "../../../shared/domain/interface/IUseCase";
-import { TYPES } from "../../../../types";
+import { TYPES } from "../../../config/ioc/types";
 import { IController } from "../../../shared/domain/interface/IController";
 import { IGetAllUsersDTO, IGetAllUsersResult } from "../domain/IGetAllUsers";
 
@@ -11,6 +11,7 @@ import { IGetAllUsersDTO, IGetAllUsersResult } from "../domain/IGetAllUsers";
 /**
  * Controller in charge of handle Gell All Users
  */
+@injectable()
 export class GetAllUserController implements IController {
 
   private _useCase: IUseCase<IGetAllUsersDTO, IGetAllUsersResult>;
@@ -31,12 +32,11 @@ export class GetAllUserController implements IController {
    */
   public async handler(request: Request, response: Response): Promise<void> {
     // TODO: The validation needs to be done HERE
-    logger.info("Controller - IN", { structuredData: true });
+    logger.info("Controller - Get all Users Controller", { structuredData: true });
 
     const query: IGetAllUsersDTO = request.body;
     const queryResponse: IGetAllUsersResult = await this._useCase.execute(query);
 
-    logger.info("Controller - OUT", { structuredData: true });
     response.send(queryResponse);
   }
 }
