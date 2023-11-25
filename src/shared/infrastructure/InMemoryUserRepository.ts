@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import { injectable } from "inversify";
-import { IUserRepository } from "../domain/interface/IUserRepository";
+import { UserRepository } from "../domain/interface/UserRepository";
 import { User } from "../domain/entities/User";
 
 /**
  * InMemory implementation
  */
 @injectable()
-export class InMemoryUserRepository implements IUserRepository {
+export class InMemoryUserRepository implements UserRepository {
   private readonly _users: User[] = [];
 
   /**

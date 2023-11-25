@@ -1,23 +1,23 @@
 import "reflect-metadata";
 import { injectable, inject } from "inversify";
 import { TYPES } from "../../../config/ioc/types";
-import { IUserRepository } from "../../../shared/domain/interface/IUserRepository";
-import { IUseCase } from "../../../shared/domain/interface/IUseCase";
-import { IGetAllUsersDTO, IGetAllUsersResult } from "../domain/IGetAllUsers";
+import { UserRepository } from "../../../shared/domain/interface/UserRepository";
+import { UseCase } from "../../../shared/domain/interface/UseCase";
+import { GetAllUsersDTO, GetAllUsersResult } from "../domain/IGetAllUsers";
 
 /**
  * Get all Users Use case Implementation
  */
 @injectable()
-export class GetAllUsersUseCase implements IUseCase<IGetAllUsersDTO, IGetAllUsersResult> {
+export class GetAllUsersUseCase implements UseCase<GetAllUsersDTO, GetAllUsersResult> {
 
-  private _UserRepository: IUserRepository;
+  private _UserRepository: UserRepository;
 
   /**
-   * @param {IUserRepository} _UserRepository Repository used to get all Users
+   * @param {UserRepository} _UserRepository Repository used to get all Users
    */
   public constructor(
-    @inject(TYPES.repository) userRepository: IUserRepository
+    @inject(TYPES.repository) userRepository: UserRepository
   ) {
     this._UserRepository = userRepository;
   }
@@ -25,14 +25,14 @@ export class GetAllUsersUseCase implements IUseCase<IGetAllUsersDTO, IGetAllUser
   /**
    * Execute the Use Case
    * @param {User} input User Object
-   * @return {Promise<ICreateUserResult>} List with all users found && Timestamp of execution
+   * @return {Promise<CreateUserResult>} List with all users found && Timestamp of execution
    */
-  public async execute(input: IGetAllUsersDTO): Promise<IGetAllUsersResult> {
+  public async execute(input: GetAllUsersDTO): Promise<GetAllUsersResult> {
     const result = await this._UserRepository.getAll();
 
     if (!result) throw new Error("Could not get Users");
 
-    const payload: IGetAllUsersResult = {
+    const payload: GetAllUsersResult = {
       users: result,
       timestamp: new Date(),
     };

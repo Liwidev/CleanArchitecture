@@ -2,41 +2,49 @@ import "reflect-metadata";
 import { injectable, inject } from "inversify";
 import * as logger from "firebase-functions/logger";
 import { Response, Request } from "express";
-import { IUseCase } from "../../../shared/domain/interface/IUseCase";
+import { UseCase } from "../../../shared/domain/interface/UseCase";
 import { TYPES } from "../../../config/ioc/types";
-import { IController } from "../../../shared/domain/interface/IController";
-import { IGetAllUsersDTO, IGetAllUsersResult } from "../domain/IGetAllUsers";
-
+import { Controller } from "../../../shared/domain/interface/Controller";
+import { GetAllUsersDTO, GetAllUsersResult } from "../domain/IGetAllUsers";
+// import { UserSchema } from "../../../shared";
+// import { z } from 'zod';
 
 /**
  * Controller in charge of handle Gell All Users
  */
 @injectable()
-export class GetAllUserController implements IController {
+export class GetAllUserController implements Controller {
 
-  private _useCase: IUseCase<IGetAllUsersDTO, IGetAllUsersResult>;
+  private _UseCase: UseCase<GetAllUsersDTO, GetAllUsersResult>;
 
   /**
    * @param {GetAllUsersUseCase} mapped to this controller
    */
   public constructor(
-    @inject(TYPES.useCases.getAllUsers) useCase: IUseCase<IGetAllUsersDTO, IGetAllUsersResult>
+    @inject(TYPES.UseCases.getAllUsers) UseCase: UseCase<GetAllUsersDTO, GetAllUsersResult>
   ) {
-    this._useCase = useCase;
+    this._UseCase = UseCase;
   }
 
   /**
    * @param {Request} request Request payload
    * @param {Response} response Callback function that will handle response 
-   * @return {IGetAllUsersResult} Conditional if user was created successfully
+   * @return {GetAllUsersResult} Conditional if user was created successfully
    */
   public async handler(request: Request, response: Response): Promise<void> {
-    // TODO: The validation needs to be done HERE
     logger.info("Controller - Get all Users Controller", { structuredData: true });
+    try {
+      const query: GetAllUsersDTO = request.body;
+      const queryResponse: GetAllUsersResult = await this._UseCase.execute(query);
+      response.send(queryResponse);
 
-    const query: IGetAllUsersDTO = request.body;
-    const queryResponse: IGetAllUsersResult = await this._useCase.execute(query);
+    } catch (error: unknown) {
+      logger.error("Controller - Get all Users Controller", { structuredData: true });
 
-    response.send(queryResponse);
+      if (error instanceof Error) {
+        response.status(500).send(error)
+      }
+      
+    }
   }
 }

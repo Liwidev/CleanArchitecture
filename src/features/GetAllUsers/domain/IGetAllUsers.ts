@@ -1,7 +1,7 @@
 import { User } from "../../../shared/domain/entities/User";
 
-export type IGetAllUsersDTO = {} | undefined;
-export type IGetAllUsersResult = {
+export type GetAllUsersDTO = {} | undefined;
+export type GetAllUsersResult = {
   users: User[];
   timestamp: Date,
 }

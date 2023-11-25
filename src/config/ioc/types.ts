@@ -1,5 +1,5 @@
 const TYPES = {
-  useCases: {
+  UseCases: {
     getAllUsers: Symbol.for("getAllUsersUseCase"),
     creatUser: Symbol.for("creatUserUseCase"),
   },

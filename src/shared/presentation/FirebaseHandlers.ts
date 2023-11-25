@@ -11,11 +11,11 @@ import { Response, Request } from "express";
 import { mainContainer } from "../../config/ioc/inversify.config";
 import { TYPES } from "../../config/ioc/types";
 // Controllers Interface
-import { IController } from "../domain/interface/IController";
+import { Controller } from "../domain/interface/Controller";
 
 // The following example shows the manual dependency injection without using any libraries
 export const CreateUser = onRequest((request: Request, response: Response) =>
-  mainContainer.get<IController>(TYPES.controller.creatUser).handler(request, response))
+  mainContainer.get<Controller>(TYPES.controller.creatUser).handler(request, response))
 
 export const GetAllUser = onRequest((request: Request, response: Response) =>
-  mainContainer.get<IController>(TYPES.controller.getAllUsers).handler(request, response))
+  mainContainer.get<Controller>(TYPES.controller.getAllUsers).handler(request, response))

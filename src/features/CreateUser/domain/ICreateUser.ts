@@ -1,14 +1,14 @@
 import { User } from "../../../shared/domain/entities/User";
-
-export type ICreateUserDTO = {
+// TODO: Implement ID being retured when you create a new user instead of returning the whole user
+export type CreateUserDTO = {
   name: string;
   age: number;
   address: string;
-  dateOfBirth: Date;
-  email: string;
+  dateOfBirth?: string;
+  email?: string;
 }
 
-export type ICreateUserResult = {
+export type CreateUserResult = {
   data: User;
   timestamp: Date;
 }

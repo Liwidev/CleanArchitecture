@@ -2,40 +2,51 @@ import "reflect-metadata";
 import { injectable, inject } from "inversify";
 import * as logger from "firebase-functions/logger";
 import { Response, Request } from "express";
-import { IUseCase } from "../../../shared/domain/interface/IUseCase";
+import { UseCase } from "../../../shared/domain/interface/UseCase";
 import { TYPES } from "../../../config/ioc/types";
-import { IController } from "../../../shared/domain/interface/IController";
-import { ICreateUserDTO, ICreateUserResult } from "../domain/ICreateUser";
+import { Controller } from "../../../shared/domain/interface/Controller";
+import { CreateUserDTO, CreateUserResult } from "../domain/ICreateUser";
+import { UserSchema } from "../../../shared";
 
 /**
  * Controller in charge of handle User Creation
  */
 @injectable()
-export class CreateUserController implements IController{
+export class CreateUserController implements Controller {
 
-  private _useCase: IUseCase<ICreateUserDTO, ICreateUserResult>;
+  private _UseCase: UseCase<CreateUserDTO, CreateUserResult>;
 
   /**
-   * @param {CreateUserUseCase} _useCase Use Case mapped to this controller
+   * @param {CreateUserUseCase} _UseCase Use Case mapped to this controller
    */
   public constructor(
-    @inject(TYPES.useCases.creatUser) useCase: IUseCase<ICreateUserDTO, ICreateUserResult>
+    @inject(TYPES.UseCases.creatUser) UseCase: UseCase<CreateUserDTO, CreateUserResult>
   ) {
-    this._useCase = useCase;
+    this._UseCase = UseCase;
   }
 
   /**
    * @param {Request} request Request with paylod of user to create
    * @param {Response} response Callback function that will handle response
-   * @return {ICreateUserResult} Result Payload
+   * @return {CreateUserResult} Result Payload
    */
   public async handler(request: Request, response: Response): Promise<void> {
-    // TODO: The validation needs to be done HERE
-    logger.info("Controller - Create User Controller", { structuredData: true });
+    try {
+      logger.info("Controller - Create User Controller", { structuredData: true });
+      
+      const query: CreateUserDTO = UserSchema.parse(request.body);
+      const queryResponse: CreateUserResult = await this._UseCase.execute(query);
 
-    const query: ICreateUserDTO = request.body;
-    const queryResponse: ICreateUserResult = await this._useCase.execute(query);
+      response.send(queryResponse);
+    } catch (error: unknown) {
+      logger.error("Controller - Get all Users Controller", { structuredData: true });
 
-    response.send(queryResponse);
+      if (error instanceof Error) {
+        response.status(500).send(error)
+      } else {
+        throw new Error("Unindentified Error")
+      }
+
+    }
   }
 }

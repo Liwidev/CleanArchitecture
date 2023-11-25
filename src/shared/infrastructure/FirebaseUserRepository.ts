@@ -1,13 +1,14 @@
 import "reflect-metadata";
 import { injectable } from "inversify";
-import { IUserRepository } from "../domain/interface/IUserRepository";
-import { User } from "../domain/entities/User";
+import { UserRepository } from "../domain/interface/UserRepository";
+import { User, UserSchema } from "../domain/entities/User";
 import { firestore } from "firebase-admin";
+
 /**
- * Class implementation of the IUserRepository interface
+ * Class implementation of the UserRepository interface
  */
 @injectable()
-export class FirebaseUserRepository implements IUserRepository {
+export class FirebaseUserRepository implements UserRepository {
 
   private _db: firestore.Firestore;
 
@@ -33,10 +34,8 @@ export class FirebaseUserRepository implements IUserRepository {
   async getAll(): Promise<User[]> {
     const myArray: User[] = [];
     const querySnapshot = await this._db.collection("entries").get();
-    // TODO: Validate if implementation of types to validate response format
     querySnapshot.forEach(doc => {
-      const check: User = doc.data() as User;
-      myArray.push(check);
+      myArray.push(UserSchema.parse(doc.data()));
     });
 
     return myArray;

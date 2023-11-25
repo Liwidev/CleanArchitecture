@@ -4,9 +4,10 @@
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
+    "start:firebase": "npm run build && firebase emulators:start",
+    "start:express": "npm run build && firebase emulators:start && node ./lib/index.js",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
@@ -20,7 +21,8 @@
     "firebase-admin": "^11.8.0",
     "firebase-functions": "^4.3.1",
     "inversify": "^6.0.2",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.12.0",
