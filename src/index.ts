@@ -1,1 +1,1 @@
-export * from './presentation/FirebaseHandlers';
+export * from './shared/presentation/FirebaseHandlers';

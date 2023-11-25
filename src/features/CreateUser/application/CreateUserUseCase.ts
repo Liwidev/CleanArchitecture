@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import { injectable, inject } from "inversify";
-import { TYPES } from "../../types";
-import { IUserRepository } from "../shared/IUserRepository";
-import { IUseCase } from "../shared/IUseCase";
-import { ICreateUserDTO, ICreateUserResult } from "./interfaces/ICreateUser";
+import { TYPES } from "../../../../types";
+import { IUserRepository } from "../../../shared/domain/interface/IUserRepository";
+import { IUseCase } from "../../../shared/domain/interface/IUseCase";
+import { ICreateUserDTO, ICreateUserResult } from "../domain/ICreateUser";
 
 
 

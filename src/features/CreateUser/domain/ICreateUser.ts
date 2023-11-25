@@ -1,4 +1,4 @@
-import { User } from "../../domain/User";
+import { User } from "../../../shared/domain/entities/User";
 
 export type ICreateUserDTO = {
   name: string;

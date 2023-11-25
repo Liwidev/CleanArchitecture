@@ -2,10 +2,10 @@ import "reflect-metadata";
 import { inject } from "inversify";
 import * as logger from "firebase-functions/logger";
 import { Response, Request } from "express";
-import { IUseCase } from "../shared/IUseCase";
-import { TYPES } from "../../types";
-import { IController } from "../shared/IController";
-import { ICreateUserDTO, ICreateUserResult } from "../application/interfaces";
+import { IUseCase } from "../../../shared/domain/interface/IUseCase";
+import { TYPES } from "../../../../types";
+import { IController } from "../../../shared/domain/interface/IController";
+import { ICreateUserDTO, ICreateUserResult } from "../domain/ICreateUser";
 
 /**
  * Controller in charge of handle User Creation

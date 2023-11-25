@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { injectable } from "inversify";
-import { IUserRepository } from "../shared/IUserRepository";
-import { User } from "../domain/User";
+import { IUserRepository } from "../domain/interface/IUserRepository";
+import { User } from "../domain/entities/User";
 import { firestore } from "firebase-admin";
 /**
  * Class implementation of the IUserRepository interface

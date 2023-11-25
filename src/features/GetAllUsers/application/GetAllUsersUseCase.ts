@@ -1,6 +1,6 @@
-import { IUserRepository } from "../shared/IUserRepository";
-import { IUseCase } from "../shared/IUseCase";
-import { IGetAllUsersDTO, IGetAllUsersResult } from "./interfaces/IGetAllUsers";
+import { IUserRepository } from "../../../shared/domain/interface/IUserRepository";
+import { IUseCase } from "../../../shared/domain/interface/IUseCase";
+import { IGetAllUsersDTO, IGetAllUsersResult } from "../domain/IGetAllUsers";
 
 /**
  * Get all Users Use case Implementation

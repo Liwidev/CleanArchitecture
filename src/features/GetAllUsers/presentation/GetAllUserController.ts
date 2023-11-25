@@ -2,10 +2,11 @@ import "reflect-metadata";
 import { inject } from "inversify";
 import * as logger from "firebase-functions/logger";
 import { Response, Request } from "express";
-import { IUseCase } from "../shared/IUseCase";
-import { TYPES } from "../../types";
-import { IController } from "../shared/IController";
-import { IGetAllUsersDTO, IGetAllUsersResult } from "../application/interfaces";
+import { IUseCase } from "../../../shared/domain/interface/IUseCase";
+import { TYPES } from "../../../../types";
+import { IController } from "../../../shared/domain/interface/IController";
+import { IGetAllUsersDTO, IGetAllUsersResult } from "../domain/IGetAllUsers";
+
 
 /**
  * Controller in charge of handle Gell All Users
