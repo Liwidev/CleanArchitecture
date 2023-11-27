@@ -1,3 +1,3 @@
 export * from './presentation/CreateUserController';
-export * from './domain/ICreateUser';
+export * from './domain/CreateUser';
 export * from './application/CreateUserUseCase';

@@ -5,9 +5,9 @@ import { Response, Request } from "express";
 import { UseCase } from "../../../shared/domain/interface/UseCase";
 import { TYPES } from "../../../config/ioc/types";
 import { Controller } from "../../../shared/domain/interface/Controller";
-import { CreateUserDTO, CreateUserResult } from "../domain/ICreateUser";
-import { UserSchema } from "../../../shared";
-
+import { CreateUserDTO, CreateUserDTOSchema, CreateUserResult, CreateUserResultSchema } from "../domain/CreateUser";
+import { v4 as uuidv4 } from 'uuid';
+import { User, UserSchema } from "../../../shared";
 /**
  * Controller in charge of handle User Creation
  */
@@ -33,9 +33,13 @@ export class CreateUserController implements Controller {
   public async handler(request: Request, response: Response): Promise<void> {
     try {
       logger.info("Controller - Create User Controller", { structuredData: true });
-      
-      const query: CreateUserDTO = UserSchema.parse(request.body);
-      const queryResponse: CreateUserResult = await this._UseCase.execute(query);
+
+      const query: User = UserSchema.parse(request.body);
+      const queryDTO: CreateUserDTO = CreateUserDTOSchema.parse({
+        id: uuidv4(),
+        ...query
+      })
+      const queryResponse: CreateUserResult = CreateUserResultSchema.parse(await this._UseCase.execute(queryDTO));
 
       response.send(queryResponse);
     } catch (error: unknown) {

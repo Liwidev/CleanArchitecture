@@ -3,7 +3,7 @@ import { injectable, inject } from "inversify";
 import { TYPES } from "../../../config/ioc/types";
 import { UserRepository } from "../../../shared/domain/interface/UserRepository";
 import { UseCase } from "../../../shared/domain/interface/UseCase";
-import { CreateUserDTO, CreateUserResult } from "../domain/ICreateUser";
+import {  CreateUserDTO, CreateUserResult } from "../domain/CreateUser";
 
 /**
  * Create User Use case Implementation
@@ -33,8 +33,8 @@ export class CreateUserUseCase implements UseCase<CreateUserDTO, CreateUserResul
     if (!result) throw new Error("Could not save User");
 
     const payload: CreateUserResult = {
-      data: input,
-      timestamp: new Date(),
+      id: input.id,
+      timestamp: (new Date()).toISOString(),
     };
 
     return payload

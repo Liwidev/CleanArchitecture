@@ -2,6 +2,7 @@
 import { z } from 'zod';
 
 export const UserSchema = z.object({
+  id: z.string().optional(),
   name: z.string().min(1),
   age: z.number().min(18).max(100),
   address: z.string().min(10).max(100),
@@ -10,13 +11,3 @@ export const UserSchema = z.object({
 })
 
 export type User = z.input<typeof UserSchema>
-
-// Using plain types / interfaces for entities
-
-// export type User = {
-//   name: string;
-//   age: number;
-//   address: string;
-//   dateOfBirth: Date;
-//   email: string;
-// }

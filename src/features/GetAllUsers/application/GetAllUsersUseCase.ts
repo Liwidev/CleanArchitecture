@@ -3,7 +3,8 @@ import { injectable, inject } from "inversify";
 import { TYPES } from "../../../config/ioc/types";
 import { UserRepository } from "../../../shared/domain/interface/UserRepository";
 import { UseCase } from "../../../shared/domain/interface/UseCase";
-import { GetAllUsersDTO, GetAllUsersResult } from "../domain/IGetAllUsers";
+import { GetAllUsersDTO, GetAllUsersResult } from "../domain/GetAllUsers";
+import { User } from "../../../shared";
 
 /**
  * Get all Users Use case Implementation
@@ -28,13 +29,12 @@ export class GetAllUsersUseCase implements UseCase<GetAllUsersDTO, GetAllUsersRe
    * @return {Promise<CreateUserResult>} List with all users found && Timestamp of execution
    */
   public async execute(input: GetAllUsersDTO): Promise<GetAllUsersResult> {
-    const result = await this._UserRepository.getAll();
+    const result: User[] = await this._UserRepository.getAll();
 
     if (!result) throw new Error("Could not get Users");
-
     const payload: GetAllUsersResult = {
       users: result,
-      timestamp: new Date(),
+      timestamp: (new Date()).toISOString(),
     };
 
     return payload;

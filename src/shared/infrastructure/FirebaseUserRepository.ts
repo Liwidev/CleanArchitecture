@@ -1,8 +1,9 @@
 import "reflect-metadata";
-import { injectable } from "inversify";
+import { injectable, inject } from "inversify";
 import { UserRepository } from "../domain/interface/UserRepository";
 import { User, UserSchema } from "../domain/entities/User";
 import { firestore } from "firebase-admin";
+import { TYPES } from "../../config/ioc/types";
 
 /**
  * Class implementation of the UserRepository interface
@@ -11,9 +12,13 @@ import { firestore } from "firebase-admin";
 export class FirebaseUserRepository implements UserRepository {
 
   private _db: firestore.Firestore;
+  private _collectionName: string
 
-  public constructor() {
+  public constructor(
+    @inject(TYPES.collectionName) collectionName: string
+  ) {
     this._db = firestore();
+    this._collectionName = collectionName;
   }
 
   /**
@@ -21,7 +26,7 @@ export class FirebaseUserRepository implements UserRepository {
    * @return {Promise<boolean>} Conditional if user was created successfully
    */
   public save(user: User): Promise<boolean> {
-    const entry = this._db.collection("entries").doc();
+    const entry = this._db.collection(this._collectionName).doc();
     entry.set(user);
 
     return Promise.resolve(true);
@@ -33,7 +38,7 @@ export class FirebaseUserRepository implements UserRepository {
    */
   async getAll(): Promise<User[]> {
     const myArray: User[] = [];
-    const querySnapshot = await this._db.collection("entries").get();
+    const querySnapshot = await this._db.collection(this._collectionName).get();
     querySnapshot.forEach(doc => {
       myArray.push(UserSchema.parse(doc.data()));
     });

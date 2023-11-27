@@ -8,6 +8,7 @@ const TYPES = {
     creatUser: Symbol.for("creatUserController"),
   },
   repository: 'Repository',
+  collectionName: 'collectionName'
 };
 
 export { TYPES };

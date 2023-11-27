@@ -1,3 +1,3 @@
 export * from './presentation/GetAllUserController';
-export * from './domain/IGetAllUsers';
+export * from './domain/GetAllUsers';
 export * from './application/GetAllUsersUseCase';
