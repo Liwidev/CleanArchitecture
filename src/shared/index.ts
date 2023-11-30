@@ -1,4 +1,3 @@
-
 // Infrastructure
 export * from './infrastructure/InMemoryUserRepository';
 export * from './infrastructure/FirebaseUserRepository';
@@ -13,3 +12,6 @@ export * from './domain/entities/User';
 
 // Presentation
 export * from './presentation/FirebaseHandlers';
+
+// Utilities
+export * from './utils/ErrorHandling';

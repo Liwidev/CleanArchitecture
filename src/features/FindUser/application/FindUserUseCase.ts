@@ -4,13 +4,13 @@ import { TYPES } from "../../../config/ioc/types";
 import { UserRepository } from "../../../shared/domain/interface/UserRepository";
 import { UseCase } from "../../../shared/domain/interface/UseCase";
 import { UserDTO } from "../../../shared";
-import { v4 as uuidv4 } from 'uuid';
+import { FindUserEntryDTO } from "../domain/FindUser";
 
 /**
- * Create User Use case Implementation
+ * Find User Use case Implementation
  */
 @injectable()
-export class CreateUserUseCase implements UseCase<UserDTO, void> {
+export class FindUserUseCase implements UseCase<FindUserEntryDTO, UserDTO> {
 
   private _UserRepository: UserRepository;
 
@@ -25,23 +25,17 @@ export class CreateUserUseCase implements UseCase<UserDTO, void> {
 
   /**
    * Execute the Use Case
-   * @param {User} input User Object
-   * @return {Promise<CreateUserResult>} The User object created & Timestamp of execution
+   * @param {FindUserEntry} id User id
+   * @return {Promise<UserDTO>} The User object created & Timestamp of execution
    */
-  public async execute(input: UserDTO): Promise<void> {
+  public async execute(input: FindUserEntryDTO): Promise<UserDTO> {
     // Here should lay all the UseCase Logic e.g if needs to validate if the user already exists to provide a more accurate response
     try {
 
-      // TODO: Create find user logic and throw error "User already exists"
-
-      // Add ID if it wasn't provided in the input
-      if (!input.id) input.id = uuidv4();
-
-
-      await this._UserRepository.save(input);
+      return await this._UserRepository.find(input.id);
 
     } catch (error: unknown) {
-      throw new Error("User wan't able to be created with reason: ");
+      throw new Error("User wan't found");
     }
 
   }

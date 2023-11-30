@@ -10,6 +10,7 @@ import {  CreateUserUseCase, CreateUserController } from "../../features/CreateU
 
 // Feature: GetAllUsers 
 import { GetAllUserController, GetAllUsersUseCase } from "../../features/GetAllUsers";
+import { FindUserController, FindUserEntryDTO, FindUserUseCase } from "../../features/FindUser";
 
 const userCollectionName = process.env.COLLECTION_NAME || "User";
 const mainContainer = new Container();
@@ -23,10 +24,12 @@ mainContainer.bind<string>(TYPES.collectionName).toConstantValue(userCollectionN
 // Use Cases
 mainContainer.bind<UseCase<UserDTO, void>>(TYPES.UseCases.creatUser).to(CreateUserUseCase).inSingletonScope();
 mainContainer.bind<UseCase<void, UserDTO[]>>(TYPES.UseCases.getAllUsers).to(GetAllUsersUseCase).inSingletonScope();
+mainContainer.bind<UseCase<FindUserEntryDTO, UserDTO>>(TYPES.UseCases.findUser).to(FindUserUseCase).inSingletonScope();
 
 // Controllers
 mainContainer.bind<Controller>(TYPES.controller.creatUser).to(CreateUserController).inSingletonScope();
 mainContainer.bind<Controller>(TYPES.controller.getAllUsers).to(GetAllUserController).inSingletonScope();
+mainContainer.bind<Controller>(TYPES.controller.findUser).to(FindUserController).inSingletonScope();
 
 
 

@@ -19,3 +19,6 @@ export const CreateUser = onRequest((request: Request, response: Response) =>
 
 export const GetAllUser = onRequest((request: Request, response: Response) =>
   mainContainer.get<Controller>(TYPES.controller.getAllUsers).handler(request, response))
+
+  export const FindUserByID = onRequest((request: Request, response: Response) =>
+  mainContainer.get<Controller>(TYPES.controller.findUser).handler(request, response))

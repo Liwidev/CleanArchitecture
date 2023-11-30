@@ -8,6 +8,9 @@ import { UserDTO } from "../domain/entities/User";
  */
 @injectable()
 export class InMemoryUserRepository implements UserRepository {
+  find(id: string): Promise<UserDTO> {
+    throw new Error("Method not implemented.");
+  }
   private readonly _users: UserDTO[] = [];
 
   /**

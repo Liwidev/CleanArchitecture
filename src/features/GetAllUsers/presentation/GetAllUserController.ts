@@ -6,7 +6,7 @@ import { UseCase } from "../../../shared/domain/interface/UseCase";
 import { TYPES } from "../../../config/ioc/types";
 import { Controller } from "../../../shared/domain/interface/Controller";
 import { GetAllUsersDTO } from "../domain/GetAllUsers";
-import { UserDTO } from "../../../shared";
+import { ErrorHandling, UserDTO } from "../../../shared";
 
 /**
  * Controller in charge of handle Gell All Users
@@ -44,12 +44,7 @@ export class GetAllUserController implements Controller {
 
     } catch (error: unknown) {
       logger.error("Controller - Get all Users Controller", { structuredData: true });
-      if (error instanceof Error) {
-        response.status(500).send(error)
-      } else {
-        throw new Error("Unindentified Error")
-      }
-
+      ErrorHandling(error, response);
     }
   }
 }
