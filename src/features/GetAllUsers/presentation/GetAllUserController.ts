@@ -5,9 +5,8 @@ import { Response, Request } from "express";
 import { UseCase } from "../../../shared/domain/interface/UseCase";
 import { TYPES } from "../../../config/ioc/types";
 import { Controller } from "../../../shared/domain/interface/Controller";
-import { GetAllUsersDTO, GetAllUsersDTOSchema, GetAllUsersResult, GetAllUsersResultSchema } from "../domain/GetAllUsers";
-// import { UserSchema } from "../../../shared";
-// import { z } from 'zod';
+import { GetAllUsersDTO } from "../domain/GetAllUsers";
+import { UserDTO } from "../../../shared";
 
 /**
  * Controller in charge of handle Gell All Users
@@ -15,13 +14,13 @@ import { GetAllUsersDTO, GetAllUsersDTOSchema, GetAllUsersResult, GetAllUsersRes
 @injectable()
 export class GetAllUserController implements Controller {
 
-  private _UseCase: UseCase<GetAllUsersDTO, GetAllUsersResult>;
+  private _UseCase: UseCase<void, UserDTO[]>;
 
   /**
    * @param {GetAllUsersUseCase} mapped to this controller
    */
   public constructor(
-    @inject(TYPES.UseCases.getAllUsers) UseCase: UseCase<GetAllUsersDTO, GetAllUsersResult>
+    @inject(TYPES.UseCases.getAllUsers) UseCase: UseCase<void, UserDTO[]>
   ) {
     this._UseCase = UseCase;
   }
@@ -29,16 +28,20 @@ export class GetAllUserController implements Controller {
   /**
    * @param {Request} request Request payload
    * @param {Response} response Callback function that will handle response 
-   * @return {GetAllUsersResult} Conditional if user was created successfully
+   * @return {GetAllUsersDTO} Conditional if user was created successfully
    */
   public async handler(request: Request, response: Response): Promise<void> {
     logger.info("Controller - Get all Users Controller", { structuredData: true });
     try {
-      logger.info("GetAllUsers - DTO", { structuredData: true });
-      const query: GetAllUsersDTO = GetAllUsersDTOSchema.parse(request.body);
-      logger.info("GetAllUsers - Result", { structuredData: true });
-      const queryResponse: GetAllUsersResult = GetAllUsersResultSchema.parse(await this._UseCase.execute(query));
+      // Execute use case
+      const useCaseResponse: UserDTO[] = await this._UseCase.execute();
+
+      // Convert use case result to response DTO
+      const queryResponse: GetAllUsersDTO = GetAllUsersDTO.convertFromDTO(useCaseResponse);
+
+      // Send message back
       response.send(queryResponse);
+
     } catch (error: unknown) {
       logger.error("Controller - Get all Users Controller", { structuredData: true });
       if (error instanceof Error) {

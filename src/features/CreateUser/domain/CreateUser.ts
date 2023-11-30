@@ -1,19 +1,21 @@
 import { z } from 'zod';
+import { UserDTO } from '../../../shared';
+
 
 export const CreateUserDTOSchema = z.object({
-  id: z.string(),
-  name: z.string().min(1),
-  age: z.number().min(18).max(100),
-  address: z.string().min(10).max(100),
-  dateOfBirth: z.string().datetime(),
-  email: z.string().email(),
+  _id: z.string(),
+  timestamp: z.string().datetime()
 })
 
 export type CreateUserDTO = z.input<typeof CreateUserDTOSchema>
 
-export const CreateUserResultSchema = z.object({
-  id: z.string(),
-  timestamp: z.string().datetime()
-})
 
-export type CreateUserResult = z.input<typeof CreateUserResultSchema>
+export const CreateUserDTO = {
+  convertFromDTO: (dto: UserDTO): CreateUserDTO => {
+    const candidate: CreateUserDTO = {
+      _id: dto.id ?? "",
+      timestamp: (new Date()).toISOString()
+    };
+    return CreateUserDTOSchema.parse(candidate);
+  }
+}

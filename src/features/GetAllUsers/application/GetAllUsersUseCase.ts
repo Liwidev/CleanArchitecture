@@ -3,14 +3,13 @@ import { injectable, inject } from "inversify";
 import { TYPES } from "../../../config/ioc/types";
 import { UserRepository } from "../../../shared/domain/interface/UserRepository";
 import { UseCase } from "../../../shared/domain/interface/UseCase";
-import { GetAllUsersDTO, GetAllUsersResult } from "../domain/GetAllUsers";
-import { User } from "../../../shared";
+import { UserDTO } from "../../../shared";
 
 /**
  * Get all Users Use case Implementation
  */
 @injectable()
-export class GetAllUsersUseCase implements UseCase<GetAllUsersDTO, GetAllUsersResult> {
+export class GetAllUsersUseCase implements UseCase<void, UserDTO[]> {
 
   private _UserRepository: UserRepository;
 
@@ -26,17 +25,14 @@ export class GetAllUsersUseCase implements UseCase<GetAllUsersDTO, GetAllUsersRe
   /**
    * Execute the Use Case
    * @param {User} input User Object
-   * @return {Promise<CreateUserResult>} List with all users found && Timestamp of execution
+   * @return {Promise<UserDTO>} List with all users found && Timestamp of execution
    */
-  public async execute(input: GetAllUsersDTO): Promise<GetAllUsersResult> {
-    const result: User[] = await this._UserRepository.getAll();
+  public async execute(): Promise<UserDTO[]> {
+    try {
+      return await this._UserRepository.getAll();
 
-    if (!result) throw new Error("Could not get Users");
-    const payload: GetAllUsersResult = {
-      users: result,
-      timestamp: (new Date()).toISOString(),
-    };
-
-    return payload;
+    } catch (err: unknown) {
+      throw new Error("Could not get Users");
+    }
   }
 }

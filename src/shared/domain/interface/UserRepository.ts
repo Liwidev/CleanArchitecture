@@ -1,6 +1,6 @@
-import { User } from "../entities/User";
+import { UserDTO } from "../entities/User";
 
 export interface UserRepository {
-  save(user: User): Promise<boolean>;
-  getAll(): Promise<User[]>;
+  save(user: UserDTO): Promise<void>;
+  getAll(): Promise<UserDTO[]>;
 }

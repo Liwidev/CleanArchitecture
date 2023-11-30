@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { injectable, inject } from "inversify";
 import { UserRepository } from "../domain/interface/UserRepository";
-import { User, UserSchema } from "../domain/entities/User";
+import { UserDTO } from "../domain/entities/User";
 import { firestore } from "firebase-admin";
 import { TYPES } from "../../config/ioc/types";
 
@@ -23,26 +23,23 @@ export class FirebaseUserRepository implements UserRepository {
 
   /**
    * @param {string} user Whom to create
-   * @return {Promise<boolean>} Conditional if user was created successfully
+   * @return {Promise<void>} Conditional if user was created successfully
    */
-  public save(user: User): Promise<boolean> {
-    const entry = this._db.collection(this._collectionName).doc();
-    entry.set(user);
-
-    return Promise.resolve(true);
+  public async save(user: UserDTO): Promise<void> {
+    await this._db.collection(this._collectionName).doc().set(user);
   }
 
   /** 
    * Method implementation to capture all users
-   * @return {Promise<User[]>} List of Users
+   * @return {Promise<UserDTO[]>} List of Users
    */
-  async getAll(): Promise<User[]> {
-    const myArray: User[] = [];
+  async getAll(): Promise<UserDTO[]> {
+    const users: UserDTO[] = [];
     const querySnapshot = await this._db.collection(this._collectionName).get();
     querySnapshot.forEach(doc => {
-      myArray.push(UserSchema.parse(doc.data()));
+      users.push(doc.data() as UserDTO);
     });
 
-    return myArray;
+    return users;
   }
 }

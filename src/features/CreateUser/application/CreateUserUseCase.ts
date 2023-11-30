@@ -3,13 +3,13 @@ import { injectable, inject } from "inversify";
 import { TYPES } from "../../../config/ioc/types";
 import { UserRepository } from "../../../shared/domain/interface/UserRepository";
 import { UseCase } from "../../../shared/domain/interface/UseCase";
-import {  CreateUserDTO, CreateUserResult } from "../domain/CreateUser";
+import { UserDTO } from "../../../shared";
 
 /**
  * Create User Use case Implementation
  */
 @injectable()
-export class CreateUserUseCase implements UseCase<CreateUserDTO, CreateUserResult> {
+export class CreateUserUseCase implements UseCase<UserDTO, void> {
 
   private _UserRepository: UserRepository;
 
@@ -27,17 +27,17 @@ export class CreateUserUseCase implements UseCase<CreateUserDTO, CreateUserResul
    * @param {User} input User Object
    * @return {Promise<CreateUserResult>} The User object created & Timestamp of execution
    */
-  public async execute(input: CreateUserDTO): Promise<CreateUserResult> {
-    const result = await this._UserRepository.save(input);
+  public async execute(input: UserDTO): Promise<void> {
+    // Here should lay all the UseCase Logic e.g if needs to validate if the user already exists to provide a more accurate response
+    try {
 
-    if (!result) throw new Error("Could not save User");
+      // TODO: Create find user logic and throw error "User already exists"
 
-    const payload: CreateUserResult = {
-      id: input.id,
-      timestamp: (new Date()).toISOString(),
-    };
+      await this._UserRepository.save(input);
 
-    return payload
+    } catch (error: unknown) {
+      throw new Error("User wan't able to be created with reason: ");
+    }
 
   }
 }
