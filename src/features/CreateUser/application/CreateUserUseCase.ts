@@ -31,9 +31,6 @@ export class CreateUserUseCase implements UseCase<UserDTO, void> {
   public async execute(input: UserDTO): Promise<void> {
     // Here should lay all the UseCase Logic e.g if needs to validate if the user already exists to provide a more accurate response
     try {
-
-      // TODO: Create find user logic and throw error "User already exists"
-
       // Add ID if it wasn't provided in the input
       const userID = input.id;
       if (!userID) {
