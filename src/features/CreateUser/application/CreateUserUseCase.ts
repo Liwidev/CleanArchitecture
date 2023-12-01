@@ -35,13 +35,25 @@ export class CreateUserUseCase implements UseCase<UserDTO, void> {
       // TODO: Create find user logic and throw error "User already exists"
 
       // Add ID if it wasn't provided in the input
-      if (!input.id) input.id = uuidv4();
-
+      const userID = input.id;
+      if (!userID) {
+        input.id = uuidv4();
+      } else {
+        const conditonals: string [][] = [
+          ["id", "==", `${input.id}`],
+        ]
+        const user = await this._UserRepository.find(conditonals);
+        if (user[0]) throw new Error("This user already exists")
+      }
 
       await this._UserRepository.save(input);
 
     } catch (error: unknown) {
-      throw new Error("User wan't able to be created with reason: ");
+      if (error instanceof Error) {
+        throw new Error(`User wasn't able to be created with reason: ${error.message}`);
+      } else {
+        throw new Error(`Unknown Error`);
+      }
     }
 
   }

@@ -31,11 +31,19 @@ export class FindUserUseCase implements UseCase<FindUserEntryDTO, UserDTO> {
   public async execute(input: FindUserEntryDTO): Promise<UserDTO> {
     // Here should lay all the UseCase Logic e.g if needs to validate if the user already exists to provide a more accurate response
     try {
-
-      return await this._UserRepository.find(input.id);
+      const conditonals: string[][] = [
+        ["id", "==", `${input.id}`],
+      ]
+      const findQueryResult = await this._UserRepository.find(conditonals);
+      if (findQueryResult.length == 0) throw new Error(`User with id: ${input.id} doesn't exist`);
+      return findQueryResult[0];
 
     } catch (error: unknown) {
-      throw new Error("User wan't found");
+      if (error instanceof Error) {
+        throw new Error(`User wasn't found with reason: ${error.message}`);
+      } else {
+        throw new Error(`Umknown Error`);
+      }
     }
 
   }

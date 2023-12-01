@@ -25,19 +25,27 @@ export class FirebaseUserRepository implements UserRepository {
    * @param {string} id Whom to find by ID
    * @return {Promise<UserDTO>} Return user found by the ID if not, it will reject with an error that will be captured by the useCase
    */
-  async find(id: string): Promise<UserDTO> {
+  async find(conditionals?: string[][]): Promise<UserDTO[]> {
     let users: UserDTO[] = [];
-    // TODO: Condition should come from use case not harcoded here
-    const snapshot = await this._db.collection(this._collectionName).where("id", "==", id).get();
-    if (snapshot.empty) {
-      throw new Error(`No matching users with ID: ${id}.`);
+    let queryPayload: any = this._db.collection(this._collectionName);
+
+    // If the query has conditionals, else it will get all
+    if (conditionals && conditionals.length > 0) {
+      for (let conditional of conditionals) {
+        queryPayload = queryPayload.where(conditional[0], conditional[1], conditional[2]);
+      }
     }
 
-    snapshot.forEach(doc => {
-      users.push(doc.data() as UserDTO);
+    const snapshot = await queryPayload.get();
+    if (snapshot.empty) {
+      return users
+    }
+
+    snapshot.forEach((doc: { data: () => UserDTO; }) => {
+      users.push(doc.data());
     });
 
-    return users[0];
+    return users;
   }
   /**
    * @param {string} user Whom to create
@@ -47,17 +55,4 @@ export class FirebaseUserRepository implements UserRepository {
     await this._db.collection(this._collectionName).doc().set(user);
   }
 
-  /** 
-   * Method implementation to capture all users
-   * @return {Promise<UserDTO[]>} List of Users
-   */
-  async getAll(): Promise<UserDTO[]> {
-    const users: UserDTO[] = [];
-    const querySnapshot = await this._db.collection(this._collectionName).get();
-    querySnapshot.forEach(doc => {
-      users.push(doc.data() as UserDTO);
-    });
-
-    return users;
-  }
 }

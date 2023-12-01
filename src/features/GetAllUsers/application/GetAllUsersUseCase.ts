@@ -29,7 +29,8 @@ export class GetAllUsersUseCase implements UseCase<void, UserDTO[]> {
    */
   public async execute(): Promise<UserDTO[]> {
     try {
-      return await this._UserRepository.getAll();
+      // Find wihtout conditionals will get all Users
+      return await this._UserRepository.find();
 
     } catch (err: unknown) {
       throw new Error("Could not get Users");
